@@ -1,0 +1,19 @@
+type User {
+    username: String!
+    firstName: String!
+    lastName: String!
+}
+
+type Restaurant {
+    id: ID!
+    name: String!
+    address: String!
+    city: String!
+}
+
+type Query {
+    me: User!
+
+    restaurants: [Restaurant!]!
+    restaurant(id: ID!): Restaurant
+}

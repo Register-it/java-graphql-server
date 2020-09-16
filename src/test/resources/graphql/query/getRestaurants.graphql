@@ -1,0 +1,8 @@
+query {
+    restaurants {
+        id
+        name
+        address
+        city
+    }
+}

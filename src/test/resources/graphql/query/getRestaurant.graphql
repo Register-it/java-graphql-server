@@ -1,0 +1,8 @@
+query {
+    restaurant(id: "123") {
+        id
+        name
+        address
+        city
+    }
+}
