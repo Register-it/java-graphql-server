@@ -11,9 +11,28 @@ type Restaurant {
     city: String!
 }
 
+type Review {
+  id: ID!
+  message: String
+  stars: Int!
+  restaurant: Restaurant
+}
+
+input ReviewInput {
+  message: String
+  stars: Int!
+  restaurantId: ID!
+}
+
 type Query {
     me: User!
 
     restaurants: [Restaurant!]!
     restaurant(id: ID!): Restaurant
+
+    reviews(restaurantId: ID!): [Review]
+}
+
+type Mutation {
+    createReview(input: ReviewInput!): Review!
 }
