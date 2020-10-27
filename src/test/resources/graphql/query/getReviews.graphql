@@ -1,0 +1,10 @@
+query {
+    reviews(restaurantId: "123") {
+        id
+        message
+        stars
+        restaurant {
+            id
+        }
+    }
+}

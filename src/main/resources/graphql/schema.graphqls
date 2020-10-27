@@ -24,6 +24,12 @@ input ReviewInput {
   restaurantId: ID!
 }
 
+type Comment {
+    id: ID!
+    message: String
+    review: Review
+}
+
 type Query {
     me: User!
 
@@ -35,4 +41,9 @@ type Query {
 
 type Mutation {
     createReview(input: ReviewInput!): Review!
+    addComment(reviewId: ID!, message: String): Comment!
+}
+
+type Subscription {
+    commentAdded(reviewId: ID!): Comment!
 }

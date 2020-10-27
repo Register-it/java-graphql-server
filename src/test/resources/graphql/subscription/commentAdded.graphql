@@ -1,0 +1,6 @@
+subscription {
+    commentAdded(reviewId: "123") {
+        id
+        message
+    }
+}

@@ -8,7 +8,9 @@ import static org.mockito.Mockito.when;
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
 import it.register.edu.graphql.model.Restaurant;
+import it.register.edu.graphql.model.Review;
 import it.register.edu.graphql.repository.RestaurantRepository;
+import it.register.edu.graphql.repository.ReviewRepository;
 import it.register.edu.graphql.resolver.UserResolver;
 import java.io.IOException;
 import java.util.Collections;
@@ -31,6 +33,9 @@ public class QueryTest {
 
   @MockBean
   private RestaurantRepository mockRestaurantRepository;
+
+  @MockBean
+  private ReviewRepository mockReviewRepository;
 
   @Test
   public void getCurrentUser() throws IOException {
@@ -89,4 +94,30 @@ public class QueryTest {
     assertNull(response.get("$.data.restaurant"));
   }
 
+  @Test
+  public void getReviewsEmpty() throws IOException {
+    when(mockReviewRepository.findByRestaurantId(123)).thenReturn(Collections.emptyList());
+
+    GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/query/getReviews.graphql");
+
+    assertTrue(response.isOk());
+    Review[] reviews = response.get("$.data.reviews", Review[].class);
+    assertEquals(0, reviews.length);
+  }
+
+  @Test
+  public void getReviewsNotEmpty() throws IOException {
+    Restaurant restaurant = Restaurant.builder().id(123).build();
+    Review review1 = Review.builder().id(111).message("Message one").stars(1).restaurant(restaurant).build();
+    Review review2 = Review.builder().id(222).message("Message two").stars(2).restaurant(restaurant).build();
+    when(mockReviewRepository.findByRestaurantId(123)).thenReturn(List.of(review1, review2));
+
+    GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/query/getReviews.graphql");
+
+    assertTrue(response.isOk());
+    Review[] reviews = response.get("$.data.reviews", Review[].class);
+    assertEquals(2, reviews.length);
+    assertEquals(review1, reviews[0]);
+    assertEquals(review2, reviews[1]);
+  }
 }
