@@ -5,3 +5,11 @@ spring:
 graphql:
   servlet:
     corsEnabled: true
+    cors:
+      allowed-origins:
+        - '*'
+      allow-credentials: true
+      allowed-methods:
+        - '*'
+      allowed-headers:
+        - '*'
