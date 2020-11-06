@@ -20,6 +20,7 @@ public class Review {
   private String message;
 
   private Integer stars;
+
   @ManyToOne(fetch = FetchType.LAZY, cascade = javax.persistence.CascadeType.PERSIST)
   @JoinColumn(name = "RESTAURANT_ID")
   private Restaurant restaurant;

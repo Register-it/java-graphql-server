@@ -9,6 +9,9 @@ type Restaurant {
     name: String!
     address: String!
     city: String!
+    stars: Float
+    reviews: [Review]
+    numberOfReviews: Int
 }
 
 type Review {

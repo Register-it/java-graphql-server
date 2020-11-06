@@ -30,4 +30,7 @@ INSERT INTO RESTAURANT (ID, NAME, ADDRESS, CITY) VALUES
   (3, 'Asian sushi bar', 'Via Shangai, 45', 'Firenze');
 
 INSERT INTO REVIEW (ID, MESSAGE, STARS, RESTAURANT_ID) values
-  (1, 'Il sushi sembra vivo', 4, 3);
+  (1, 'Il sushi sembra vivo', 4, 3),
+  (2, 'Il sushi sembra vivo, che schifo', 1, 3),
+  (3, 'la cameriera è bona', 5, 3),
+  (4, 'il sushi è congelato', 2, 3);
