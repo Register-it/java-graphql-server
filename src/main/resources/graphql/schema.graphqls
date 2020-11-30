@@ -18,7 +18,7 @@ type Review {
   id: ID!
   message: String
   stars: Int!
-  restaurant: Restaurant
+  restaurant: Restaurant!
 }
 
 input ReviewInput {
@@ -39,7 +39,7 @@ type Query {
     restaurants: [Restaurant!]!
     restaurant(id: ID!): Restaurant
 
-    reviews(restaurantId: ID!): [Review]
+    reviews(restaurantId: ID!): [Review!]!
 }
 
 type Mutation {
