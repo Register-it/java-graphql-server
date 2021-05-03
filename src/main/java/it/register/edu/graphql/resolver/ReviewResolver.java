@@ -44,7 +44,7 @@ public class ReviewResolver implements GraphQLQueryResolver, GraphQLMutationReso
 
     Review review = Review.builder()
       .message(input.getMessage())
-      .stars(input.getStars())
+      .rating(input.getRating())
       .restaurant(restaurant)
       .build();
     return reviewRepository.save(review);

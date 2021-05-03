@@ -73,18 +73,18 @@ public class ReviewResolverTest {
     int restaurantId = 1;
     when(mockRepository.findById(restaurantId)).thenReturn(Optional.of(new Restaurant()));
 
-    Integer stars = 4;
+    Integer rating = 4;
 
     ReviewInput input = ReviewInput.builder()
       .restaurantId(restaurantId)
       .message("wow")
-      .stars(4)
+      .rating(4)
       .build();
     final Review review = resolver.createReview(input);
 
     verify(mockReviewRepository).save(reviewCaptor.capture());
 
-    assertEquals(stars, reviewCaptor.getValue().getStars());
+    assertEquals(rating, reviewCaptor.getValue().getRating());
     assertEquals("wow", reviewCaptor.getValue().getMessage());
   }
 
@@ -96,7 +96,7 @@ public class ReviewResolverTest {
     ReviewInput input = ReviewInput.builder()
         .restaurantId(restaurantId)
         .message("wow")
-        .stars(4)
+        .rating(4)
         .build();
     final Review review = resolver.createReview(input);
 

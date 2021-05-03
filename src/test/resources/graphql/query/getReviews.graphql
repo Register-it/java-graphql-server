@@ -2,7 +2,7 @@ query {
     reviews(restaurantId: "123") {
         id
         message
-        stars
+        rating
         restaurant {
             id
         }

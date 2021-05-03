@@ -19,7 +19,7 @@ public class Review {
   private Integer id;
   private String message;
 
-  private Integer stars;
+  private Integer rating;
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = javax.persistence.CascadeType.PERSIST)
   @JoinColumn(name = "RESTAURANT_ID")

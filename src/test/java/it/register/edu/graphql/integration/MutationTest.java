@@ -56,7 +56,7 @@ public class MutationTest {
     assertTrue(response.isOk());
     assertEquals(reviewId, response.get("$.data.createReview.id", Integer.class));
     assertEquals("Content", response.get("$.data.createReview.message"));
-    assertEquals("3", response.get("$.data.createReview.stars"));
+    assertEquals("3", response.get("$.data.createReview.rating"));
     assertEquals(restaurantId, response.get("$.data.createReview.restaurant.id", Integer.class));
   }
 

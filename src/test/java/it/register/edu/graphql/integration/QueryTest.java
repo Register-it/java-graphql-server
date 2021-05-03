@@ -108,8 +108,8 @@ public class QueryTest {
   @Test
   public void getReviewsNotEmpty() throws IOException {
     Restaurant restaurant = Restaurant.builder().id(123).build();
-    Review review1 = Review.builder().id(111).message("Message one").stars(1).restaurant(restaurant).build();
-    Review review2 = Review.builder().id(222).message("Message two").stars(2).restaurant(restaurant).build();
+    Review review1 = Review.builder().id(111).message("Message one").rating(1).restaurant(restaurant).build();
+    Review review2 = Review.builder().id(222).message("Message two").rating(2).restaurant(restaurant).build();
     when(mockReviewRepository.findByRestaurantId(123)).thenReturn(List.of(review1, review2));
 
     GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/query/getReviews.graphql");

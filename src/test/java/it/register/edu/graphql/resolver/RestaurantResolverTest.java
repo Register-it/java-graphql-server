@@ -29,7 +29,7 @@ public class RestaurantResolverTest {
     List<Restaurant> expected = List.of(new Restaurant(), new Restaurant());
     when(mockRepository.findAll()).thenReturn(expected);
 
-    List<Restaurant> result = resolver.getRestaurants();
+    List<Restaurant> result = resolver.getRestaurants(null);
 
     assertEquals(expected, result);
   }

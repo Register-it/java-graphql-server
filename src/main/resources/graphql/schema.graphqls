@@ -1,52 +1,105 @@
+"The currently logged user"
 type User {
+    "the username"
     username: String!
+    "the first name"
     firstName: String!
+    "the last name"
     lastName: String!
 }
 
+"A restaurant"
 type Restaurant {
+    "the id of the restaurant"
     id: ID!
+    "the name of the restaurant"
     name: String!
+    "the address of the restaurant"
     address: String!
+    "the city where the restaurant is"
     city: String!
-    stars: Float
-    reviews: [Review]
+    "the rating  of the restaurant from 1 to 5"
+    rating: Float
+    "the reviews of the restaurant"
+    reviews(
+        "filters the reviews by rating"
+        rating: Int
+    ): [Review]
+    "the total number of reviews of the restaurant"
     numberOfReviews: Int
 }
 
+"A review on a restaurant"
 type Review {
-  id: ID!
-  message: String
-  stars: Int!
-  restaurant: Restaurant!
-}
-
-input ReviewInput {
-  message: String
-  stars: Int!
-  restaurantId: ID!
-}
-
-type Comment {
+    "the id of the review"
     id: ID!
+    "A text message, which is the actual content of the review"
     message: String
+    "the rating  of the review, from 1 to 5"
+    rating: Int!
+    "the restaurant the reviews belongs to"
+    restaurant: Restaurant!
+}
+
+"The input to insert a review"
+input ReviewInput {
+    "A text message, which is the actual content of the review"
+    message: String
+    "the rating  of the review, from 1 to 5"
+    rating: Int!
+    "the restaurant id the review will be placed on"
+    restaurantId: ID!
+}
+
+"A comment that can be added to a review"
+type Comment {
+    "the id of the comment"
+    id: ID!
+    "A text message, which is the actual content of the comment"
+    message: String
+    "the review that holds this comment"
     review: Review
 }
 
 type Query {
+    "returns the current logged in user"
     me: User!
 
-    restaurants: [Restaurant!]!
-    restaurant(id: ID!): Restaurant
+    "returns the list of all the restaurant"
+    restaurants(
+        "filters by city"
+        city : String
+    ): [Restaurant!]!
 
-    reviews(restaurantId: ID!): [Review!]!
+    "returns a restaurant by its id"
+    restaurant(
+        "the id of the restaurant to retrieve"
+        id: ID!
+    ): Restaurant
+
+    "return all the reviews belonging to a restaurant"
+    reviews(
+        "the id of the restaurant"
+        restaurantId: ID!
+    ): [Review!]!
 }
 
 type Mutation {
+    "Adds a review to a restaurant"
     createReview(input: ReviewInput!): Review!
-    addComment(reviewId: ID!, message: String): Comment!
+
+    "adds a comment to a review"
+    addComment(
+        "the id of the review"
+        reviewId: ID!,
+        "A text message, which is the actual content of the comment"
+        message: String): Comment!
 }
 
 type Subscription {
-    commentAdded(reviewId: ID!): Comment!
+    "Sends a notification every time a comment is added to a certain review"
+    commentAdded(
+        "the id of the review you subscribe to"
+        reviewId: ID!
+    ): Comment!
 }

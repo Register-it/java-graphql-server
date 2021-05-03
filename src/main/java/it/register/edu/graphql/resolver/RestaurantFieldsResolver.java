@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class RestaurantFieldsResolver implements GraphQLResolver<Restaurant> {
@@ -15,17 +16,21 @@ public class RestaurantFieldsResolver implements GraphQLResolver<Restaurant> {
   @Autowired
   private ReviewRepository reviewRepository;
 
-  public double getStars(Restaurant restaurant) {
+  public Double getRating(Restaurant restaurant) {
     final List<Review> reviews = reviewRepository.findByRestaurantId(restaurant.getId());
     return reviews
       .stream()
-      .mapToDouble(Review::getStars)
+      .mapToDouble(Review::getRating)
       .average()
       .orElse(0);
   }
 
-  public List<Review> getReviews(Restaurant restaurant) {
-    return reviewRepository.findByRestaurantId(restaurant.getId());
+  public List<Review> getReviews(Restaurant restaurant, Integer rating) {
+    final int requiredRating = rating == null ? 0 : rating;
+    return reviewRepository.findByRestaurantId(restaurant.getId())
+      .stream()
+      .filter(r -> r.getRating() >= requiredRating)
+      .collect(Collectors.toList());
   }
 
   public int getNumberOfReviews(Restaurant restaurant) {

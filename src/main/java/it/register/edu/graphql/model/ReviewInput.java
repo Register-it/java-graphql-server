@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ReviewInput {
   private String message;
-  private int stars;
+  private int rating;
   private int restaurantId;
 }

@@ -16,7 +16,10 @@ public class RestaurantResolver implements GraphQLQueryResolver {
   @Autowired
   private RestaurantRepository repository;
 
-  public List<Restaurant> getRestaurants() {
+  public List<Restaurant> getRestaurants(String city) {
+    if (city != null) {
+      return repository.findByCityLikeIgnoreCase(city);
+    }
     return repository.findAll();
   }
 
