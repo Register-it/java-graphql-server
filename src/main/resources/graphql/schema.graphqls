@@ -39,6 +39,7 @@ type Review {
     rating: Int!
     "the restaurant the reviews belongs to"
     restaurant: Restaurant!
+    replies: [Reply]!
 }
 
 "The input to insert a review"
@@ -51,13 +52,13 @@ input ReviewInput {
     restaurantId: ID!
 }
 
-"A comment that can be added to a review"
-type Comment {
-    "the id of the comment"
+"A reply that can be added to a review"
+type Reply {
+    "the id of the reply"
     id: ID!
-    "A text message, which is the actual content of the comment"
+    "A text message, which is the actual content of the reply"
     message: String
-    "the review that holds this comment"
+    "the review that holds this reply"
     review: Review
 }
 
@@ -88,18 +89,18 @@ type Mutation {
     "Adds a review to a restaurant"
     createReview(input: ReviewInput!): Review!
 
-    "adds a comment to a review"
-    addComment(
+    "adds a reply to a review"
+    addReply(
         "the id of the review"
         reviewId: ID!,
-        "A text message, which is the actual content of the comment"
-        message: String): Comment!
+        "A text message, which is the actual content of the reply"
+        message: String): Reply!
 }
 
 type Subscription {
-    "Sends a notification every time a comment is added to a certain review"
-    commentAdded(
+    "Sends a notification every time a reply is added to a certain review"
+    replyAdded(
         "the id of the review you subscribe to"
         reviewId: ID!
-    ): Comment!
+    ): Reply!
 }

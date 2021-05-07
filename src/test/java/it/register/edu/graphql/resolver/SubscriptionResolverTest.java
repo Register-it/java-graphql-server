@@ -3,7 +3,7 @@ package it.register.edu.graphql.resolver;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import it.register.edu.graphql.model.Comment;
+import it.register.edu.graphql.model.Reply;
 import it.register.edu.graphql.model.Review;
 import java.util.List;
 import org.junit.Before;
@@ -22,17 +22,17 @@ public class SubscriptionResolverTest {
 
   @Before
   public void setUp() {
-    ReflectionTestUtils.setField(resolver, "comments", Flux.just(
-        Comment.builder().id(987).review(Review.builder().id(123).build()).build(),
-        Comment.builder().id(876).review(Review.builder().id(234).build()).build(),
-        Comment.builder().id(765).review(Review.builder().id(123).build()).build()
+    ReflectionTestUtils.setField(resolver, "replies", Flux.just(
+        Reply.builder().id(987).review(Review.builder().id(123).build()).build(),
+        Reply.builder().id(876).review(Review.builder().id(234).build()).build(),
+        Reply.builder().id(765).review(Review.builder().id(123).build()).build()
     ));
   }
 
   @Test
-  public void commentAdded() {
-    Flux<Comment> result = (Flux<Comment>) resolver.commentAdded("123");
-    List<Comment> list = result.collectList().block();
+  public void replyAdded() {
+    Flux<Reply> result = (Flux<Reply>) resolver.replyAdded("123");
+    List<Reply> list = result.collectList().block();
     assertNotNull(list);
     assertEquals(2, list.size());
     assertEquals(987, list.get(0).getId().intValue());

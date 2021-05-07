@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS COMMENT;
+DROP TABLE IF EXISTS REPLY;
 DROP TABLE IF EXISTS REVIEW;
 DROP TABLE IF EXISTS RESTAURANT;
 
@@ -17,7 +17,7 @@ CREATE TABLE REVIEW (
   CONSTRAINT `RESTAURANT_REVIEW_FK` FOREIGN KEY (`RESTAURANT_ID`) REFERENCES `RESTAURANT` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
-CREATE TABLE COMMENT (
+CREATE TABLE REPLY (
   ID INT AUTO_INCREMENT PRIMARY KEY,
   MESSAGE VARCHAR(500) NOT NULL,
   REVIEW_ID INT NOT NULL,
@@ -56,10 +56,10 @@ INSERT INTO REVIEW (ID, MESSAGE, RATING, RESTAURANT_ID) values
   (2, 'Il sushi sembra vivo, che schifo', 1, 3),
   (3, 'la cameriera è bona', 5, 3),
   (4, 'Lo chef vorrebbe creare una cucina post-molecolare e nostalgica, che sussurra, invece, l’uso dissennato della cottura sous vide, con risultati oscuramente mistici.', 2, 16),
-  (5, 'Il servizio è accurato con tocchi casuali di scortesia.', 4, 8),
+  (5, 'Il servizio è accurato con tocchi casuali di scortesia.', 4, 1),
   (6, 'L’ambiente è del genere metropolitano–trasandato con inutili tovaglie e tovaglioli in resina disegnati dal noto studio architettonico che ha firmato tutti i locali del gruppo.', 1, 16),
-  (7, 'Nel complesso, il locale dovrebbe cercare di cambiare colore alle tovaglie, se desidera costruirsi una nomea più altisonante.', 2, 3),
-  (8, 'Lo chef vorrebbe creare una cucina ingegnosa e domestica, che tradisce, invece, la sua preparazione decennale, con risultati decisamente disruptive.', 4, 14),
+  (7, 'Nel complesso, il locale dovrebbe cercare di cambiare colore alle tovaglie, se desidera costruirsi una nomea più altisonante.', 2, 1),
+  (8, 'Lo chef vorrebbe creare una cucina ingegnosa e domestica, che tradisce, invece, la sua preparazione decennale, con risultati decisamente disruptive.', 4, 1),
   (9, 'Il servizio è complice con pizzichi di cabaret.', 2, 1),
   (10, 'L’ambiente è del genere stiloso–raffinato con inutili tavoli hi-tech disegnati dal noto studio architettonico che ha studiato il restyling del MOMA.', 2, 4),
   (11, 'Nel complesso, il locale dovrebbe cercare di salutare meno calorosamente gli amici, se desidera costruirsi un’allure più chic & cheap.', 1, 16),
@@ -79,3 +79,9 @@ INSERT INTO REVIEW (ID, MESSAGE, RATING, RESTAURANT_ID) values
   (25, 'Il servizio è premuroso con tocchi casuali di improvvisazione.', 3, 23),
   (26, 'L’ambiente è del genere casereccio–trascurato con notevoli finestroni hi-tech disegnati dal noto studio architettonico specializzato in archeologia urbana.', 4, 23),
   (27, 'Nel complesso, il locale dovrebbe cercare di far disegnare le divise ad uno stilista di pregio, se desidera costruirsi una clientela più rispondente alle sue premesse.', 4, 3);
+
+INSERT INTO REPLY (ID, MESSAGE, REVIEW_ID) values
+  (1, 'Sembra vivo ma non lo è', 1),
+  (2, 'le divise sono molto pregiate', 9),
+  (3, 'hai mangiato troppo, vergogna', 9),
+  (4, 'io avrei mangiato ancora di più', 9);

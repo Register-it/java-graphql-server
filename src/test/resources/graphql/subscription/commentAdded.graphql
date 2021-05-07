@@ -1,5 +1,5 @@
 subscription {
-    commentAdded(reviewId: "123") {
+    replyAdded(reviewId: "123") {
         id
         message
     }

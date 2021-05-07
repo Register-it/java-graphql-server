@@ -1,5 +1,5 @@
 mutation {
-    addComment(reviewId: "123", message: "Content") {
+    addReply(reviewId: "123", message: "Content") {
         id
         message
         review {

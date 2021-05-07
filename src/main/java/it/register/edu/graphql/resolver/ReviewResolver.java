@@ -4,11 +4,11 @@ package it.register.edu.graphql.resolver;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import it.register.edu.graphql.exception.ObjectNotFoundException;
-import it.register.edu.graphql.model.Comment;
+import it.register.edu.graphql.model.Reply;
 import it.register.edu.graphql.model.Restaurant;
 import it.register.edu.graphql.model.Review;
 import it.register.edu.graphql.model.ReviewInput;
-import it.register.edu.graphql.repository.CommentRepository;
+import it.register.edu.graphql.repository.ReplyRepository;
 import it.register.edu.graphql.repository.RestaurantRepository;
 import it.register.edu.graphql.repository.ReviewRepository;
 import java.util.List;
@@ -27,10 +27,10 @@ public class ReviewResolver implements GraphQLQueryResolver, GraphQLMutationReso
   private RestaurantRepository restaurantRepository;
 
   @Autowired
-  private CommentRepository commentRepository;
+  private ReplyRepository replyRepository;
 
   @Autowired
-  private UnicastProcessor<Comment> processor;
+  private UnicastProcessor<Reply> processor;
 
   public List<Review> getReviews(String restaurantId) {
     return reviewRepository.findByRestaurantId(Integer.parseInt(restaurantId));
@@ -51,18 +51,18 @@ public class ReviewResolver implements GraphQLQueryResolver, GraphQLMutationReso
   }
 
   @Transactional
-  public Comment addComment(String reviewId, String message) {
+  public Reply addReply(String reviewId, String message) {
 
     Review review = reviewRepository
         .findById(Integer.parseInt(reviewId))
         .orElseThrow(() -> new ObjectNotFoundException("review non found", reviewId));
 
-    Comment comment = Comment.builder()
+    Reply reply = Reply.builder()
         .message(message)
         .review(review)
         .build();
 
-    Comment saved = commentRepository.save(comment);
+    Reply saved = replyRepository.save(reply);
 
     processor.onNext(saved);
 

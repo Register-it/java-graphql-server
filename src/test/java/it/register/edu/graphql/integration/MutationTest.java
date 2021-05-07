@@ -7,10 +7,10 @@ import static org.mockito.Mockito.when;
 
 import com.graphql.spring.boot.test.GraphQLResponse;
 import com.graphql.spring.boot.test.GraphQLTestTemplate;
-import it.register.edu.graphql.model.Comment;
+import it.register.edu.graphql.model.Reply;
 import it.register.edu.graphql.model.Restaurant;
 import it.register.edu.graphql.model.Review;
-import it.register.edu.graphql.repository.CommentRepository;
+import it.register.edu.graphql.repository.ReplyRepository;
 import it.register.edu.graphql.repository.RestaurantRepository;
 import it.register.edu.graphql.repository.ReviewRepository;
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class MutationTest {
   private ReviewRepository mockReviewRepository;
 
   @MockBean
-  private CommentRepository mockCommentRepository;
+  private ReplyRepository mockReplyRepository;
 
   @Test
   public void createReviewSuccess() throws IOException {
@@ -73,31 +73,31 @@ public class MutationTest {
   }
 
   @Test
-  public void addCommentSuccess() throws IOException {
+  public void addReplySuccess() throws IOException {
     Integer reviewId = 123;
-    Integer commentId = 111;
+    Integer replyId = 111;
     Review review = Review.builder().id(reviewId).build();
     when(mockReviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
-    when(mockCommentRepository.save(any())).then(args -> {
-      Comment comment = args.getArgument(0);
-      comment.setId(commentId);
-      return comment;
+    when(mockReplyRepository.save(any())).then(args -> {
+      Reply reply = args.getArgument(0);
+      reply.setId(replyId);
+      return reply;
     });
 
-    GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/mutation/addComment.graphql");
+    GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/mutation/addReply.graphql");
 
     assertTrue(response.isOk());
-    assertEquals(commentId, response.get("$.data.addComment.id", Integer.class));
-    assertEquals("Content", response.get("$.data.addComment.message"));
-    assertEquals(reviewId, response.get("$.data.addComment.review.id", Integer.class));
+    assertEquals(replyId, response.get("$.data.addReply.id", Integer.class));
+    assertEquals("Content", response.get("$.data.addReply.message"));
+    assertEquals(reviewId, response.get("$.data.addReply.review.id", Integer.class));
   }
 
   @Test
-  public void addCommentReviewNotFound() throws IOException {
+  public void addReplyReviewNotFound() throws IOException {
     Integer reviewId = 123;
     when(mockReviewRepository.findById(reviewId)).thenReturn(Optional.empty());
 
-    GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/mutation/addComment.graphql");
+    GraphQLResponse response = graphQLTestTemplate.postForResource("graphql/mutation/addReply.graphql");
 
     assertTrue(response.isOk());
     Object[] errors = response.get("$.errors", Object[].class);

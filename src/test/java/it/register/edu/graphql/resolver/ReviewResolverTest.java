@@ -8,11 +8,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import it.register.edu.graphql.exception.ObjectNotFoundException;
-import it.register.edu.graphql.model.Comment;
+import it.register.edu.graphql.model.Reply;
 import it.register.edu.graphql.model.Restaurant;
 import it.register.edu.graphql.model.Review;
 import it.register.edu.graphql.model.ReviewInput;
-import it.register.edu.graphql.repository.CommentRepository;
+import it.register.edu.graphql.repository.ReplyRepository;
 import it.register.edu.graphql.repository.RestaurantRepository;
 import it.register.edu.graphql.repository.ReviewRepository;
 import java.util.ArrayList;
@@ -39,15 +39,15 @@ public class ReviewResolverTest {
   private ReviewRepository mockReviewRepository;
 
   @Mock
-  private CommentRepository mockCommentRepository;
+  private ReplyRepository mockReplyRepository;
 
-  private UnicastProcessor<Comment> processor = UnicastProcessor.create();
+  private UnicastProcessor<Reply> processor = UnicastProcessor.create();
 
   @Captor
   private ArgumentCaptor<Review> reviewCaptor;
 
   @Captor
-  private ArgumentCaptor<Comment> commentCaptor;
+  private ArgumentCaptor<Reply> replyCaptor;
 
   @InjectMocks
   private ReviewResolver resolver;
@@ -104,36 +104,36 @@ public class ReviewResolverTest {
   }
 
   @Test
-  public void addComment() {
+  public void addReply() {
     int reviewId = 123;
     Review review = new Review();
-    String message = "This is a comment";
+    String message = "This is a reply";
 
     when(mockReviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
-    when(mockCommentRepository.save(any())).then(args -> args.getArgument(0));
+    when(mockReplyRepository.save(any())).then(args -> args.getArgument(0));
 
-    List<Comment> comments = new ArrayList<>();
-    processor.subscribe(comments::add);
+    List<Reply> replies = new ArrayList<>();
+    processor.subscribe(replies::add);
 
-    Comment result = resolver.addComment(String.valueOf(reviewId), message);
+    Reply result = resolver.addReply(String.valueOf(reviewId), message);
 
-    assertNotNull(comments);
-    assertEquals(1, comments.size());
-    assertEquals(result, comments.get(0));
+    assertNotNull(replies);
+    assertEquals(1, replies.size());
+    assertEquals(result, replies.get(0));
 
-    verify(mockCommentRepository).save(commentCaptor.capture());
-    assertEquals(message, commentCaptor.getValue().getMessage());
-    assertEquals(review, commentCaptor.getValue().getReview());
-    assertEquals(result, commentCaptor.getValue());
+    verify(mockReplyRepository).save(replyCaptor.capture());
+    assertEquals(message, replyCaptor.getValue().getMessage());
+    assertEquals(review, replyCaptor.getValue().getReview());
+    assertEquals(result, replyCaptor.getValue());
   }
 
   @Test(expected = ObjectNotFoundException.class)
-  public void addComment_reviewNotFound() {
+  public void addReply_reviewNotFound() {
     int reviewId = 123;
-    String message = "This is a comment";
+    String message = "This is a reply";
 
     when(mockReviewRepository.findById(reviewId)).thenReturn(Optional.empty());
 
-    resolver.addComment(String.valueOf(reviewId), message);
+    resolver.addReply(String.valueOf(reviewId), message);
   }
 }
